@@ -1,0 +1,212 @@
+<!--
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener</title>
+
+    <link href="jsdelivr.net" rel="stylesheet">
+</head>
+<body class="bg-dark text-white py-5">
+    <div class="container" style="max-width: 600px;">
+        <div class="text-center mb-5">
+            <h1 class="display-5 fw-bold text-info">Django URL Shortener</h1>
+            <p class="text-muted">Convert long messy links into clean redirect codes instantly.</p>
+        </div>
+
+
+        <div class="card bg-secondary border-0 p-4 shadow mb-4">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Paste your destination URL:</label>
+                    <input type="text" name="long_url" class="form-control form-control-lg bg-dark text-white border-secondary" placeholder="example.com" required>
+                </div>
+                <button type="submit" class="btn btn-info btn-lg w-100 fw-bold">Shorten Link</button>
+            </form>
+        </div>
+
+    
+        {% if shortened_url %}
+            <div class="card bg-success text-white text-center border-0 p-4 shadow">
+                <p class="mb-1 fw-bold text-uppercase tracking-wider small">Your Clean Link Is Ready</p>
+            
+                <a href="http://{{ shortened_url }}" target="_blank" class="fs-3 my-2 text-warning fw-bold text-break text-decoration-none">
+                    {{ shortened_url }}
+                </a>
+                <small class="opacity-75">Click the link above to open a new tab and test the live database routing!</small>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SnapURL — Premium Link Shortener</title>
+    <!-- Stable Production Bootstrap 5 CDN -->
+    <link href="jsdelivr.net" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(145deg, #090d16 0%, #111827 50%, #1e1b4b 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            padding: 40px 20px;
+        }
+        .main-card {
+            background: rgba(17, 24, 39, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 28px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            padding: 48px;
+            width: 100%;
+            max-width: 540px;
+            transition: transform 0.3s ease;
+        }
+        .app-logo-icon {
+            background: linear-gradient(135deg, #818cf8 0%, #4f46e5 100%);
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
+        }
+        .app-title {
+            font-weight: 800;
+            letter-spacing: -1px;
+            background: linear-gradient(to right, #ffffff, #c7d2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+        .form-group-container {
+            margin-top: 32px;
+            margin-bottom: 24px;
+        }
+        .input-wrapper {
+            background: rgba(3, 7, 18, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            padding: 4px 6px 4px 16px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .input-wrapper:focus-within {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+            background: rgba(3, 7, 18, 0.8);
+        }
+        .form-control-custom {
+            background: transparent !important;
+            border: none !important;
+            color: #ffffff !important;
+            padding: 12px 0;
+            box-shadow: none !important;
+            font-size: 1rem;
+        }
+        .form-control-custom::placeholder {
+            color: #4b5563;
+        }
+        .btn-submit {
+            background: #4f46e5;
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            padding: 10px 24px;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+        .btn-submit:hover {
+            background: #4338ca;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+        .result-panel {
+            background: rgba(16, 185, 129, 0.06);
+            border: 1px solid rgba(16, 185, 129, 0.15);
+            border-radius: 20px;
+            padding: 24px;
+            margin-top: 32px;
+            text-align: center;
+        }
+        .link-output {
+            color: #10b981;
+            font-size: 1.35rem;
+            font-weight: 700;
+            text-decoration: none;
+            word-break: break-all;
+            display: inline-block;
+            margin: 8px 0;
+            transition: color 0.15s ease;
+        }
+        .link-output:hover {
+            color: #34d399;
+        }
+        .text-secondary{
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Outer Presentation Shell -->
+    <div class="main-card text-center">
+        
+        <!-- Header Group -->
+        <!-- Added inline flex layout and auto margins to center the block itself and the SVG inside it -->
+<div class="app-logo-icon" style="display: flex !important; align-items: center !important; justify-content: center !important; margin: 0 auto 24px auto !important;">
+    <svg xmlns="w3.org" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+</div>
+
+       <h1 class="app-title display-6 w-100 text-center mx-auto" style="text-align: center !important; display: block !important;">
+    SnapURL
+</h1>
+        <p class="text-secondary small px-2 m-0">Minimize clutter. Convert long messy links into clean redirect codes instantly.</p>
+
+        <!-- Pure Workflow Form Element -->
+                <!-- Pure Workflow Form Element -->
+        <form method="POST">
+           {% csrf_token %}
+            <!-- mx-auto centers the block; style="max-width: 420px;" shrinks the overall field width -->
+            <div class="form-group-container mx-auto" style="max-width: 420px;">
+                <div class="d-flex flex-row flex-nowrap align-items-center gap-3" style="display: flex !important;">
+                    
+                    <div class="input-wrapper" style="flex: 1 1 70%; min-width: 200px;">
+                        <input type="text" name="long_url" class="form-control form-control-custom w-100" placeholder="Paste link..." required autocomplete="off">
+                    </div>
+                    
+                    <!-- Separate action button on the side -->
+                    <button type="submit" class="btn btn-submit" style="flex: 0 0 auto; margin-left: 16px; padding: 0 24px; height: 50px; white-space: nowrap;">Shorten</button>
+                    
+                </div>
+            </div>
+        </form>
+
+
+        <!-- Unaltered Logic Conditional Render block -->
+        {% if shortened_url %}
+            <div class="result-panel">
+                <span class="text-secondary text-uppercase tracking-wider small d-block fw-bold mb-1" style="font-size: 0.75rem;">Short Link Generated</span>
+                <a href="http://{{ shortened_url }}" target="_blank" class="link-output">
+                    {{ shortened_url }}
+                </a>
+            </div>
+        {% endif %}
+
+    </div>
+
+    <!-- Production JavaScript Dependency Bundle -->
+    <script src="jsdelivr.net"></script>
+</body>
+</html>
